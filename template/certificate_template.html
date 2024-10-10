@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .certificate {
+            border: 10px solid #ccc;
+            padding: 20px;
+            width: 600px;
+            margin: 0 auto;
+        }
+        .name {
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .course {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <h1>Certificate of Completion</h1>
+        <p class="name">{{ user.name }}</p>
+        <p class="course">has completed the course</p>
+        <p class="course">{{ course.name }}</p>
+    </div>
+</body>
+</html>

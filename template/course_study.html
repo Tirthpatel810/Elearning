@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.name }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .course-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+        }
+
+        .left-content {
+            width: 70%;
+            padding-right: 20px;
+        }
+
+        .right-sidebar {
+            width: 30%;
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Resource list styling */
+        .resource-list a {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .resource-list a:hover {
+            color: #3498db;
+        }
+
+        /* Video Styles */
+        video {
+            max-width: 100%;
+            border-radius: 6px;
+            margin-top: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Document Download Link */
+        a.download-link {
+            text-decoration: none;
+            background-color: #2980b9;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        a.download-link:hover {
+            background-color: #3498db;
+        }
+
+        /* Image Styling */
+        img {
+            max-width: 100%;
+            border-radius: 6px;
+            margin-top: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="course-container">
+        <!-- Left Column: Dynamic Content Display -->
+        <div class="left-content">
+            <h1>{{ course.name }}</h1>
+
+            <!-- Display selected resource -->
+            {% if selected_resource %}
+                <div class="selected-resource">
+                    <h3>{{ selected_resource.resource_name }}</h3>
+                    {% if selected_resource.resource_type == 'video' %}
+                        <video controls>
+                            <source src="{{ selected_resource.resource_file.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% elif selected_resource.resource_type == 'document' %}
+                        <a href="{{ selected_resource.resource_file.url }}" download class="download-link">Download Document</a>
+                    {% elif selected_resource.resource_type == 'image' %}
+                        <img src="{{ selected_resource.resource_file.url }}" alt="{{ selected_resource.resource_name }}">
+                    {% elif selected_resource.resource_type == 'link' %}
+                        <a href="{{ selected_resource.resource_link }}" target="_blank" class="resource-link">{{ selected_resource.resource_name }}</a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>Please select a resource from the right sidebar.</p>
+            {% endif %}
+        </div>
+
+        <!-- Right Column: Resource List -->
+        <div class="right-sidebar">
+            <h3>Course Resources:</h3>
+            <ul class="resource-list">
+                {% for resource in course.resources.all %}
+                    <li>
+                        <a href="{% url 'course_study_resource' course.id resource.id %}">{{ resource.resource_name }}</a>
+                    </li>
+                {% endfor %}
+                {% if show_test_link %}
+                    <div class="test-link">
+                        <a href="{% url 'course_test' course.id %}" class="start-test-button">Take the Test</a>
+                    </div>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

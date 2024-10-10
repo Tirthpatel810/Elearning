@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Set a clean font */
+            background-color: #f4f4f9; /* Light background color */
+            color: #333; /* Text color */
+            margin: 0;
+            padding: 20px; /* Add some padding */
+        }
+
+        h1 {
+            text-align: center; /* Center the heading */
+            color: #4CAF50; /* Green color for the heading */
+            margin-bottom: 20px; /* Space below the heading */
+        }
+
+        p {
+            font-size: 18px; /* Font size for paragraphs */
+            margin: 10px 0; /* Vertical space between paragraphs */
+        }
+
+        /* Styles for buttons */
+        .button {
+            display: inline-block; /* Make the button a block for easier clicking */
+            padding: 10px 15px; /* Add padding to the button */
+            background-color: #007BFF; /* Bootstrap primary color */
+            color: white; /* White text */
+            text-decoration: none; /* Remove underline from the link */
+            border-radius: 5px; /* Rounded corners */
+            text-align: center; /* Center text in button */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+            margin-top: 20px; /* Space above the button */
+        }
+
+        .button:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+        
+        .button-red {
+            background-color: #dc3545; /* Bootstrap danger color for retest */
+        }
+
+        .button-red:hover {
+            background-color: #c82333; /* Darker shade for hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Result</h1>
+    
+    <p>Your Score: {{ score }}</p>
+    <p>Status: {{ passed|yesno:"Passed,Failed" }}</p>
+
+    <a href="{% url 'my_courses' %}" class="button">View My Courses</a>
+
+    {% if passed %}
+        <a href="{% url 'generate_certificate' user_id=user.id course_id=course.id %}" class="button">Get Certificate</a>  <!-- Link to Get Certificate -->
+    {% else %}
+        <a href="{% url 'course_test' course.id %}" class="button button-red">Retest</a>
+    {% endif %}
+</body>
+</html>
