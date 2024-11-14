@@ -1,0 +1,27 @@
+{% extends 'base_app/base_app.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <!-- Main Content -->
+    <main>
+        <section class="about-us">
+            <h2>Who We Are</h2>
+            <p>We are a passionate team dedicated to providing the best solutions in the industry. Our mission is to innovate and create products that make a positive impact on society.</p>
+
+            <h2>Our Mission</h2>
+            <p>Our mission is to lead the way in developing cutting-edge technology that improves the lives of people worldwide. We aim to push boundaries, challenge conventions, and always strive for excellence.</p>
+
+            <h2>Our Values</h2>
+            <ul>
+                <li><strong>Integrity:</strong> We operate with honesty and transparency in everything we do.</li>
+                <li><strong>Innovation:</strong> We embrace creativity and new ideas to drive progress.</li>
+                <li><strong>Customer-Centric:</strong> Our customers' needs are at the heart of everything we do.</li>
+                <li><strong>Excellence:</strong> We strive to deliver the highest quality in our products and services.</li>
+            </ul>
+        </section>
+    </main>
+
+{% endblock %}

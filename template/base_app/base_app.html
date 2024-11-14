@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}E-Learning{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="navbar-logo">
+                <a href="#">ELearning</a>
+            </div>
+            <ul class="navbar-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'course_list' %}">Courses</a></li>
+                <li><a href="{% url 'my_courses' %}">My Courses</a></li>
+            </ul>
+            <div class="navbar-search">
+                <form method="get" action="{% url 'course_list' %}">
+                    <input type="text" name="search" placeholder="Search courses..." value="{{ search_query }}">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+            <div class="navbar-auth">
+                {% if request.session.email %}
+                    <button id="seeProfileBtn" class="btn">See Profile</button>
+                    <a href="{% url 'logout' %}" class="btn btn-logout" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-register">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    <li><a href="{% url 'policy' %}">Privacy Policy</a></li>
+                    <li><a href="{% url 't_and_c' %}">Terms & Conditions</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <ul class="social-media">
+                    <li><a href="https://www.facebook.com/tankravi.tankravi.5"><img src="{% static 'icons/facebook.png' %}" alt="Facebook"></a></li>
+                    <li><a href="https://x.com/____ravi____25"><img src="{% static 'icons/x.png' %}" alt="X"></a></li>
+                    <li><a href="https://www.instagram.com/ravi_r_tank_25/"><img src="{% static 'icons/instagram.png' %}" alt="Instagram"></a></li>
+                    <li><a href="https://www.linkedin.com/in/ravi-tank-575bb622a"><img src="{% static 'icons/linkedin.png' %}" alt="LinkedIn"></a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: ravitank267@gmail.com</p>
+                <p>Phone: +91 8758202320</p>
+                <p>Address: 123 eLearning St, Learning City</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 eLearning App. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <h3>Your Profile</h3>
+            <div class="profile-info">
+                <p><strong>Name:</strong> {{ request.session.name }}</p>
+                <p><strong>Email:</strong> {{ request.session.email }}</p>
+                <p><strong>Phone:</strong> {{ request.session.phone }}</p>
+            </div>
+            <button class="close-btn" id="closeProfileBtn">Close</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const seeProfileBtn = document.getElementById('seeProfileBtn');
+            const closeProfileBtn = document.getElementById('closeProfileBtn');
+            const profileModal = document.getElementById('profileModal');
+    
+            if (seeProfileBtn && profileModal) {
+                // Show profile modal
+                seeProfileBtn.onclick = function () {
+                    profileModal.style.display = 'flex';
+                };
+            }
+    
+            if (closeProfileBtn && profileModal) {
+                // Close profile modal
+                closeProfileBtn.onclick = function () {
+                    profileModal.style.display = 'none';
+                };
+            }
+    
+            // Close modal when clicking outside of the modal content
+            window.onclick = function (event) {
+                if (profileModal && event.target === profileModal) {
+                    profileModal.style.display = 'none';
+                }
+            };
+        });
+    </script>
+    
+</body>
+</html>

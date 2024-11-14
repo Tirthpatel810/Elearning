@@ -1,54 +1,30 @@
+{% extends 'base_app/base_app.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ course.name }} - eLearning App</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-</head>
-<body>
 
-    <nav class="navbar">
-        <div class="navbar-logo">
-            <a href="#">ELearning</a>
-        </div>
-        <ul class="navbar-links">
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'course_list' %}">Courses</a></li>
-            <li><a href="{% url 'my_courses' %}">My Courses</a></li>
-        </ul>
-        <div class="navbar-search">
-            <input type="text" placeholder="Search Courses...">
-            <button type="button">Search</button>
-        </div>
-        <div class="navbar-auth">
-            {% if request.session.email %}
-                <button id="seeProfileBtn" class="btn">See Profile</button>
-                <a href="{% url 'logout' %}" class="btn btn-logout">Logout</a>
-            {% else %}
-                <a href="{% url 'login' %}" class="btn">Login</a>
-                <a href="{% url 'register' %}" class="btn btn-register">Register</a>
-            {% endif %}
-        </div>
-    </nav>
+{% block title %}{{ course.name }} - eLearning App{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/course_details.css' %}">
 
     <section class="course-detail">
-        <h1>{{ course.name }}</h1>
-        <img src="{{ course.thumbnail.url }}" alt="{{ course.name }}">
-        <p>{{ course.description }}</p>
-        <p>Price: ${{ course.get_final_price }}</p>
-        <p>Discount: {{ course.discount }}%</p>
-        <p>Course Length: {{ course.course_length }} hours</p>
-        <form method="POST" action="{% url 'enroll_course' course.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn-enroll">Enroll Now</button>
-        </form>
-    </section>
-
-    <footer class="footer">
-        <!-- Footer content -->
-    </footer>
-
-</body>
-</html>
+        <div class="course-detail-container">
+            <div class="course-info">
+                <h1>{{ course.name }}</h1>
+                <img src="{{ course.thumbnail.url }}" alt="{{ course.name }}" class="course-image">
+                <p class="description">{{ course.description }}</p>
+                <div class="course-meta">
+                    <p><strong>Price:</strong> ₹{{ course.get_final_price }}</p>
+                    <p><strong>Discount:</strong> {{ course.discount }}%</p>
+                    <p><strong>Course Length:</strong> {{ course.course_length }} hours</p>
+                </div>
+            </div>
+            <div class="enroll-section">
+                <h2>Get Started Today!</h2>
+                <form method="POST" action="{% url 'enroll_course' course.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-enroll">Enroll Now</button>
+                </form>
+            </div>
+        </div>
+    </section>    
+{% endblock %}

@@ -1,96 +1,11 @@
-<!-- enroll_course.html -->
+{% extends 'base_app/base_app.html' %}
+{% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment for {{ course.name }}</title>
+{% block title %}Payment{% endblock %}
+
+{% block content %}
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            padding: 20px;
-        }
-        .course-container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-        .course-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .course-header h1 {
-            color: #333;
-            font-size: 2.2rem;
-            margin: 10px 0;
-        }
-        .course-header p {
-            font-size: 1.2rem;
-            color: #777;
-        }
-        .course-details {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .course-thumbnail img {
-            width: 200px;
-            border-radius: 8px;
-        }
-        .course-info {
-            flex-grow: 1;
-        }
-        .course-info h2 {
-            font-size: 1.8rem;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        .course-info p {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 8px;
-        }
-        .course-info .price {
-            font-size: 1.5rem;
-            color: #27ae60;
-            font-weight: bold;
-        }
-        .course-info .original-price {
-            text-decoration: line-through;
-            color: #e74c3c;
-            font-size: 1.1rem;
-            margin-left: 8px;
-        }
-        .course-info .discount {
-            color: #e67e22;
-            font-size: 1.1rem;
-            margin-left: 8px;
-        }
-        .payment-section {
-            margin-top: 30px;
-        }
-        .btn-pay-now {
-            background-color: #F37254;
-            color: white;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-pay-now:hover {
-            background-color: #f56341;
-        }
-    </style>
-</head>
-<body>
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}">
 
     <div class="course-container">
         <!-- Course Header -->
@@ -130,7 +45,7 @@
         <div class="payment-section">
             <form id="payment-form" action="{% url 'razorpay_callback' %}" method="POST">
                 {% csrf_token %}
-                <input type="hidden" name="course_id" value="{{ course.id }}
+                <input type="hidden" name="course_id" value="{{ course.id }}">
                 <input type="hidden" name="amount" value="{{ amount }}">
             
                 <script
@@ -143,16 +58,13 @@
                     data-name="Course Enrollment"
                     data-description="Enroll for {{ course.name }}"
                     data-image="https://your_logo_url.com/logo.png"
-                    data-prefill.name="{{ request.user.get_full_name }}"
-                    data-prefill.email="{{ request.user.email }}"
+                    data-prefill.name="{{ user_detail.name }}"
+                    data-prefill.email="{{ user_detail.email }}"
                     data-theme.color="#F37254"
-                    data-callback_url="{% url 'razorpay_callback' %}"
+                    data-callback_url="http://127.0.0.1:8000/razorpay-callback/?course_id={{ course.id }}&user_email={{ user_detail.email }}"
                     ></script>
                     <input type="hidden" name="hidden">
                 </form>
         </div>
     </div>
-
-</body>
-</html>
-
+{% endblock %}

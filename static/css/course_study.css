@@ -1,0 +1,82 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.course-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+}
+
+.left-content {
+    width: 70%;
+    padding-right: 20px;
+}
+
+.right-sidebar {
+    width: 30%;
+    background-color: #ecf0f1;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Resource list styling */
+.resource-list a {
+    text-decoration: none;
+    color: #2980b9;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.resource-list a:hover {
+    color: #3498db;
+}
+
+/* Video Styles */
+video {
+    max-width: 100%;
+    border-radius: 6px;
+    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Document Download Link */
+a.download-link {
+    text-decoration: none;
+    background-color: #2980b9;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+a.download-link:hover {
+    background-color: #3498db;
+}
+
+/* Image Styling */
+img {
+    max-width: 100%;
+    border-radius: 6px;
+    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

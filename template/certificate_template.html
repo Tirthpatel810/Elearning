@@ -3,33 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Completion</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .certificate-container {
+            width: 800px;
+            background: #fff;
+            border: 10px solid #4A90E2;
+            padding: 30px;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
-        .certificate {
-            border: 10px solid #ccc;
-            padding: 20px;
-            width: 600px;
-            margin: 0 auto;
+        h1 {
+            font-size: 48px;
+            color: #4A90E2;
+            margin-bottom: 20px;
         }
-        .name {
-            font-size: 30px;
-            font-weight: bold;
-        }
-        .course {
+        h2 {
             font-size: 24px;
-            margin-top: 10px;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        .recipient {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        .course-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4A90E2;
+            margin-bottom: 20px;
+        }
+        .date {
+            font-size: 18px;
+            color: #333;
+            margin-top: 40px;
+        }
+        .signature {
+            margin-top: 60px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .thank-you {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <div class="certificate">
+
+    <div class="certificate-container">
         <h1>Certificate of Completion</h1>
-        <p class="name">{{ user.name }}</p>
-        <p class="course">has completed the course</p>
-        <p class="course">{{ course.name }}</p>
+        <h2>Presented to</h2>
+        <div class="recipient">{{ user.name }}</div>
+        <div class="course-name">Course: {{ course.name }}</div>
+        <p>This is to certify that the above-named individual has successfully completed the course.</p>
+        <p class="date">Date of Completion: {{ completion_date }}</p>
+        <div class="signature">Authorized Signature</div>
+        <div class="thank-you">Thank you for your dedication and hard work!</div>
     </div>
+
 </body>
 </html>

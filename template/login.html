@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Registration</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
@@ -27,8 +27,8 @@
                 <div class="input-group">
                     <button type="submit" class="btn">Login</button>
                 </div>
-                <a href="{% url 'forgot_password' %}" style="text-decoration: none;color: rgb(211, 27, 27); position: center;">Forgot password</a>
-                <p class="switch-text">Don't have an account? <a href="{% url 'register' %}" id="switch-register">Register here</a></p>
+                <a href="{% url 'forgot_password' %}" class="forgot-password">Forgot password?</a>
+                <p class="switch-text">Don't have an account? <a href="{% url 'register' %}" class="switch-register">Register here</a></p>
             </form>
         </div>
     </div>

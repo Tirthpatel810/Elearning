@@ -1,0 +1,338 @@
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #343a40;
+    padding: 15px 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.navbar-logo a {
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-links li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.navbar-links li a:hover {
+    color: #ffbb00;
+}
+
+.navbar-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-search input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 250px;
+    font-size: 16px;
+}
+
+.navbar-search button {
+    background-color: #ffbb00;
+    color: #343a40;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.navbar-search button:hover {
+    background-color: #ffa500;
+}
+
+.navbar-auth .btn {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #007bff;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+}
+
+.navbar-auth .btn:hover {
+    background-color: #0056b3;
+}
+
+.navbar-auth .btn-register {
+    background-color: #28a745;
+}
+
+.navbar-auth .btn-register:hover {
+    background-color: #218838;
+}
+
+/* Home Page Content */
+.home-content {
+    text-align: center;
+    margin-top: 70px;
+    padding: 0 20px;
+}
+
+.home-content p {
+    font-size: 1.1em;
+    line-height: 1.8em;
+    color: #555;
+    margin: 30px auto;
+    max-width: 1000px;
+}
+
+.home-content h1 {
+    font-size: 42px;
+    color: #2c3e50;
+    margin: 40px 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Course Cards */
+.course-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    overflow: hidden;
+    border: 1px solid #eee;
+    position: relative;
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    width: 80%;
+    height: 180px;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.card img:hover {
+    transform: scale(1.05);
+}
+
+.card h2 {
+    font-size: 24px;
+    margin-top: 15px;
+    color: #34495e;
+    font-weight: 600;
+}
+
+.card .finalprice {
+    font-size: 20px;
+    font-weight: bold;
+    color: #28a745;
+    margin: 15px 0;
+}
+
+.card .discount {
+    font-size: 16px;
+    color: #999;
+    margin-left: 10px;
+}
+
+.card .price {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(219, 34, 34);
+    margin: 15px 0;
+    text-decoration: line-through;
+}
+
+.card-buttons {
+    margin-top: 20px;
+}
+
+.card-buttons .btn-enroll {
+    background-color: #ff6347;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.card-buttons .btn-enroll:hover {
+    background-color: #e53e2f;
+}
+
+.card-buttons .btn-see-more {
+    display: inline-block;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.card-buttons .btn-see-more:hover {
+    color: #0056b3;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 40px 0;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+}
+
+.footer-section {
+    width: 30%;
+}
+
+.footer-section h4 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: block;
+    transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+    color: #ffbb00;
+}
+
+.footer-section .social-media {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-section .social-media li {
+    width: 30px;
+    height: 30px;
+}
+
+.footer-section .social-media li:hover {
+    background-color: #ffbb00;
+}
+
+.social-media img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.social-media img:hover {
+    transform: scale(1.1);
+}
+
+.footer-bottom {
+    background-color: #222;
+    color: #bbbbbb;
+    text-align: center;
+    padding: 15px;
+}
+
+/* Profile Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: left;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-content p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.close-btn {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+    background-color: #218838;
+}

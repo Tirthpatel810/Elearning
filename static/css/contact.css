@@ -1,0 +1,122 @@
+/* Base Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    padding: 40px 20px;
+}
+
+.contact-us {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.contact-us h2 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.contact-us p {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.contact-us .form-group {
+    margin-bottom: 20px;
+}
+
+.contact-us .form-group label {
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.contact-us .form-group input,
+.contact-us .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+.contact-us .form-group input:focus,
+.contact-us .form-group textarea:focus {
+    outline: none;
+    border-color: #4A90E2;
+    background-color: #fff;
+}
+
+.contact-us .form-group textarea {
+    resize: vertical;
+}
+
+.contact-us button {
+    background-color: #4A90E2;
+    color: white;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.contact-us button:hover {
+    background-color: #357ABD;
+}
+
+.messages {
+    margin-bottom: 20px;
+}
+
+.message {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.message.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-us {
+        padding: 20px;
+        margin: 0 10px;
+    }
+
+    .contact-us h2 {
+        font-size: 28px;
+    }
+
+    .contact-us button {
+        font-size: 16px;
+        padding: 10px 15px;
+    }
+}

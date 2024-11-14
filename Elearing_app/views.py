@@ -32,7 +32,7 @@ def login_required(view_func):
         if request.session.get('email'):
             return view_func(request, *args, **kwargs)
         else:
-            return redirect('login')  # Redirect to your custom login page if not authenticated
+            return redirect('login')
     return wrapper
 
 def home(request):
@@ -159,7 +159,7 @@ def logout_view(request):
     return redirect('home')
 
 def course_list_view(request):
-    courses = Course.objects.filter(active=True)  # Only show active courses
+    courses = Course.objects.filter(active=True)
 
     # Handle search
     search_query = request.GET.get('search', '')
@@ -167,7 +167,7 @@ def course_list_view(request):
         courses = courses.filter(name__icontains=search_query)
 
     # Handle sorting
-    sort_by = request.GET.get('sort', 'name')  # Default sort by name
+    sort_by = request.GET.get('sort', 'name')
     if sort_by in ['name', 'price', 'course_length']:
         courses = courses.order_by(sort_by)
 
@@ -185,7 +185,7 @@ def course_detail_view(request, course_id):
     }
     return render(request, 'course_detail.html', context)
 
-def create_razorpay_order(course_id, user):
+def create_razorpay_order(course_id):
     # Get the course
     course = get_object_or_404(Course, id=course_id)
     
@@ -208,17 +208,23 @@ def create_razorpay_order(course_id, user):
 
 @login_required
 def enroll_course_view(request, course_id):
+    user_email = request.session['email']
     course = get_object_or_404(Course, id=course_id)
-    order = create_razorpay_order(course_id, request.user)
-    # Context to pass to frontend
+    user_detail = get_object_or_404(Customer, email=user_email)
+
+    if Payment.objects.filter(course=course, user=user_detail).exists():
+        messages.error(request, 'You have already enrolled in this course.')
+        return redirect('course_study', course_id=course_id)
+    
+    order = create_razorpay_order(course_id)
     context = {
         'course': course,
         'razorpay_key_id': settings.RAZORPAY_KEY_ID,
         'order_id': order['id'],
         'amount': order['amount'],
-        'currency': order['currency']
+        'currency': order['currency'],
+        'user_detail': user_detail
     }
-    request.session['cid'] = course.id
     return render(request, 'payment.html', context)
 
 @csrf_exempt
@@ -245,9 +251,7 @@ def payment_success_view(request):
 
     return HttpResponse("Invalid Request")
 
-def payment_success(request, course_id, order_id):
-    print(f"Processing payment success for course_id: {course_id}, order_id: {order_id}")
-
+# def payment_success(request, course_id, order_id):
     # Get the course based on the course_id
     course = get_object_or_404(Course, id=course_id)
 
@@ -309,17 +313,17 @@ def course_study(request, course_id, resource_id=None):
 @csrf_exempt
 def razorpay_callback(request):
     if request.method == "POST":
-        course_id = request.session.get('cid')
-        print(f"course_id: {course_id}")
-
         try:
-            course = Course.objects.get(id=course_id)
+            course_id = request.GET.get('course_id')
+            user_email = request.GET.get('user_email')
+            # Fetch the course and user instances
+            course = get_object_or_404(Course, id=course_id)
             course.purchased_by += 1
             course.save()
 
             # Create a new Payment record for the user
             Payment.objects.create(
-                user= get_object_or_404(Customer,email=request.session['email']),
+                user= get_object_or_404(Customer,email=user_email),
                 course=course,
                 amount=course.get_final_price(),
                 payment_date=timezone.now(),
@@ -328,7 +332,6 @@ def razorpay_callback(request):
             return redirect('my_courses')
         except Course.DoesNotExist:
             return HttpResponse("No Course matches the given query.", status=404)
-
 
     return redirect('home')
 
@@ -415,7 +418,7 @@ def reset_password(request, user_id):
 
     return render(request, 'reset_password.html', {'user_id': user_id})
 
-# views.py
+@login_required
 def course_test(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     questions = TestQuestion.objects.filter(course=course)
@@ -428,7 +431,7 @@ def course_test(request, course_id):
                 score += 1
         
         passed = score >= 6
-        user = get_object_or_404(Customer,email=request.session['email'])
+        user = get_object_or_404(Customer, email=request.session['email'])
         UserTestAttempt.objects.create(user=user, course=course, score=score, passed=passed)
         
         if passed:
@@ -439,54 +442,88 @@ def course_test(request, course_id):
 
     return render(request, 'course_test.html', {'course': course, 'questions': questions})
 
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.pdfgen import canvas
+from datetime import datetime
+from io import BytesIO
+
 def generate_certificate_pdf(user, course):
-    # Create a bytes buffer for the PDF
+    user_name = user.name  # Get the user's name from the 'user' object
+    course_name = course.name  # Get the course's name from the 'course' object
+
+    # Create a BytesIO buffer to store the PDF in memory
     buffer = BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
 
-    # Create a PDF document
-    pdf = SimpleDocTemplate(buffer, pagesize=letter)
+    # Set up the dimensions for the certificate
+    width, height = letter  # 612x792 points
+    margin = 40
+    c.setPageSize((800, 600))  # Certificate size
 
-    # Create a list to hold the content
-    elements = []
+    # Background and Border
+    c.setStrokeColor(colors.HexColor("#4A90E2"))
+    c.setLineWidth(10)
+    c.rect(margin, margin, 720, 520, fill=0)
 
-    # Define some styles
-    styles = getSampleStyleSheet()
-    title_style = styles['Title']
-    normal_style = styles['Normal']
+    # Title "Certificate of Completion"
+    c.setFont("Helvetica-Bold", 48)
+    c.setFillColor(colors.HexColor("#4A90E2"))
+    c.drawString(100, 490, "Certificate of Completion")
 
-    # Add title
-    title = Paragraph(f'Certificate of Completion', title_style)
-    elements.append(title)
-    elements.append(Spacer(1, 20))  # Spacer of 20 units
+    # Subtitle "Presented to"
+    c.setFont("Helvetica-Bold", 24)
+    c.setFillColor(colors.black)
+    c.drawString(100, 430, "Presented to")
 
-    # Add user information
-    user_info = Paragraph(f'This is to certify that <b>{user.name}</b> has successfully completed the course <b>{course.name}</b>.', normal_style)
-    elements.append(user_info)
-    elements.append(Spacer(1, 20))
-    
-    elements.append(Spacer(1, 50))  # Spacer for signing area
+    # Recipient's Name
+    c.setFont("Helvetica-Bold", 32)
+    c.drawString(100, 370, user_name)
 
-    # Add a signature area or a footer
-    signature = Paragraph('<b>Signature</b>', normal_style)
-    elements.append(signature)
+    # Course Name
+    c.setFont("Helvetica-Bold", 24)
+    c.setFillColor(colors.HexColor("#4A90E2"))
+    c.drawString(100, 320, f"Course: {course_name}")
 
-    # Build the PDF
-    pdf.build(elements)
+    # Certification Statement
+    c.setFont("Helvetica", 18)
+    c.setFillColor(colors.black)
+    c.drawString(100, 270, "This certifies that the above-named individual has completed the course.")
 
-    # Move the buffer position to the beginning
+    # Completion Date
+    completion_date = datetime.now().strftime('%B %d, %Y')
+    c.drawString(100, 230, f"Date of Completion: {completion_date}")
+
+    # Signature
+    c.setFont("Helvetica-Bold", 20)
+    c.drawString(100, 150, "Authorized Signature")
+
+    # Thank You Message
+    c.setFont("Helvetica", 18)
+    c.drawString(100, 100, "Thank you for your dedication and hard work!")
+
+    # Save the PDF to the buffer
+    c.save()
+
+    # Seek to the beginning of the BytesIO buffer
     buffer.seek(0)
+
     return buffer
 
 def certificate_view(request, user_id, course_id):
     # Fetch user and course instances
     user = get_object_or_404(Customer, id=user_id)
     course = get_object_or_404(Course, id=course_id)
+
     # Generate the certificate PDF in memory
     pdf_buffer = generate_certificate_pdf(user, course)
+
     # Send the certificate via email
     send_certificate_email(user, course, pdf_buffer)
+
     # Display success message
     messages.success(request, 'Your certificate has been sent to your email!')
+
     # Redirect to a success page (you can customize this)
     return redirect('my_courses')
 
@@ -496,8 +533,43 @@ def send_certificate_email(user, course, pdf_buffer):
     message = f'Dear {user.name},\n\nCongratulations on completing the course: {course.name}!\n\nPlease find your certificate attached.\n\nBest regards,\nYour Team'
     email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
-    # Attach the PDF
+    # Attach the PDF from the buffer
     email.attach(f'{user.name}_certificate.pdf', pdf_buffer.read(), 'application/pdf')
-    
+
     # Send the email
     email.send()
+
+def about(request):
+    return render(request, 'about.html')
+
+def contact_us(request):
+    if request.method == 'POST':
+
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        if name and email and message:
+            ContactUs.objects.create(name=name, email=email, message=message)
+
+            send_mail(
+                'New Contact Us Message',
+                f"Message from {name} ({email}):\n\n{message}",
+                email,
+                ['ravitank267@gmail.com'],
+                fail_silently=False,
+            )
+
+            # Show success message
+            messages.success(request, 'Your message has been sent successfully!')
+            return redirect('contact')
+        else:
+            messages.error(request, 'Please fill in all fields.')
+    
+    return render(request, 'contact.html')
+
+def policy(request):
+    return render(request, 'policy.html')
+
+def t_and_c(request):
+    return render(request, 't_and_c.html')

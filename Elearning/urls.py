@@ -17,7 +17,7 @@ urlpatterns = [
     path('enroll/<int:course_id>/', views.enroll_course_view, name='enroll_course'),
     path('payment/success/', views.payment_success_view, name='payment_success'),
 
-    path('payment-success/<int:course_id>/<str:order_id>/', views.payment_success, name='payment_success'),
+    # path('payment-success/<int:course_id>/<str:order_id>/', views.payment_success, name='payment_success'),
     path('razorpay-callback/', views.razorpay_callback, name='razorpay_callback'),
     path('my-courses/', views.my_courses, name='my_courses'),
     path('course-study/<int:course_id>/', views.course_study, name='course_study'),
@@ -26,11 +26,14 @@ urlpatterns = [
     path('verify-reset-code/', views.verify_reset_code, name='verify_reset_code'),
     path('reset-password/<int:user_id>/', views.reset_password, name='reset_password'),
 
-    path('course-study/<int:course_id>/', views.course_study, name='course_study'),
     path('course-study/<int:course_id>/<int:resource_id>/', views.course_study, name='course_study_resource'),
     path('course-test/<int:course_id>/', views.course_test, name='course_test'),
 
     path('generate_certificate/<int:user_id>/<int:course_id>/', views.certificate_view, name='generate_certificate'),
+    path('about',views.about, name='about'),
+    path('contact',views.contact_us, name='contact'),
+    path('terms',views.t_and_c, name='t_and_c'),
+    path('privacy',views.policy, name='policy'),
 
 ]
 
